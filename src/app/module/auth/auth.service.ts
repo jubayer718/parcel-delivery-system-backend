@@ -5,8 +5,9 @@ import httpStatus from 'http-status-codes';
 import bcrypt from 'bcryptjs';
 import { createUserToken } from "../../utils/userToken";
 
-const userLogin = async (payload: Partial<IUser>) => {
+const credentialLogin = async (payload: Partial<IUser>) => {
   const userExist = await User.findOne({ email: payload.email });
+
   if (!userExist) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found")
   };
@@ -22,7 +23,7 @@ const userLogin = async (payload: Partial<IUser>) => {
 
   const userTokens = createUserToken(userExist);
 
-  const { password, ...rest } = userExist.toObject();
+  const { password :pass , ...rest } = userExist.toObject();
 
   return {
     accessToken: userTokens.accessToken,
@@ -30,6 +31,8 @@ const userLogin = async (payload: Partial<IUser>) => {
     user:rest,
   }
 
+}
 
-
+export const AuthServices = {
+  credentialLogin
 }
