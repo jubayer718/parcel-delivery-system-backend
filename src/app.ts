@@ -5,7 +5,8 @@ import notfound from "./app/middlewares/notFound";
 import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
 const app = express();
 
-
+app.use(cors());
+app.use(express.json());
 app.use('/api/v1', router);
 
 app.get("/", (req: Request, res: Response) => {
