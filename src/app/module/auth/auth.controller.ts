@@ -7,6 +7,14 @@ import { setAuthCookie } from "../../utils/setAuthCookie";
 import AppError from "../../errorHelpers/AppError";
 import { JwtPayload } from "jsonwebtoken";
 
+declare global {
+  namespace Express {
+    interface Request {
+      user?: JwtPayload;
+    }
+  }
+}
+
 const credentialLogin = catchAsync(
   async (req: Request, res: Response, next:NextFunction) => {
     const loginInfo = await AuthServices.credentialLogin(req.body)
@@ -43,47 +51,50 @@ const getNewAccessToken = catchAsync(async (req: Request, res: Response, next: N
         data: tokenInfo,
     })
 })
-// const logout = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-//     res.clearCookie("accessToken", {
-//         httpOnly: true,
-//         secure: false,
-//         sameSite: "lax"
-//     })
-//     res.clearCookie("refreshToken", {
-//         httpOnly: true,
-//         secure: false,
-//         sameSite: "lax"
-//     })
 
-//     sendResponse(res, {
-//         success: true,
-//         statusCode: httpStatus.OK,
-//         message: "User Logged Out Successfully",
-//         data: null,
-//     })
-// })
-// const resetPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+const logout = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-//     const newPassword = req.body.newPassword;
-//     const oldPassword = req.body.oldPassword;
-//   const decodedToken = req.user;
+    res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
 
-//     await AuthServices.resetPassword(oldPassword, newPassword, decodedToken as JwtPayload);
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "User Logged Out Successfully",
+        data: null,
+    })
+})
 
-//     sendResponse(res, {
-//         success: true,
-//         statusCode: httpStatus.OK,
-//         message: "Password Changed Successfully",
-//         data: null,
-//     })
-// })
 
+const resetPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    const newPassword = req.body.newPassword;
+    const oldPassword = req.body.oldPassword;
+    const decodedToken = req.user
+
+    await AuthServices.resetPassword(oldPassword, newPassword, decodedToken as JwtPayload);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Password Changed Successfully",
+        data: null,
+    })
+})
 
 export const AuthController = {
   credentialLogin,
   getNewAccessToken,
-  // logout,
-  // resetPassword
+  logout,
+  resetPassword
 
 }
