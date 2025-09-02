@@ -21,6 +21,43 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 
 })
 
+const getAllUsers = catchAsync(async (req: Request, res: Response) => {
+    const data = await UserService.getAllUsersFromDB();
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "All user retrieve successfully",
+        data: data.data,
+        meta: data.meta,
+    });
+});
+
+
+const blockUser = catchAsync(async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const result = await UserService.blockUserByAdmin(userId);
+    sendResponse(res, {
+        success: true,
+        message: "User has been blocked successfully",
+        statusCode: httpStatus.OK,
+        data: result,
+    });
+});
+
+const unblockUser = catchAsync(async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const result = await UserService.unblockUserByAdmin(userId);
+    sendResponse(res, {
+        success: true,
+        message: "User has been unblocked successfully",
+        statusCode: httpStatus.OK,
+        data: result,
+    });
+});
+
 export const UserController = {
-  createUser
+  createUser,
+  getAllUsers,
+  blockUser,
+  unblockUser
 }
