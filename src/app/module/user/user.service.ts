@@ -32,7 +32,37 @@ const getAllUsersFromDB = async () => {
     return { data: users, meta: { total: totalUsers } };
 };
 
+
+const blockUserByAdmin = async (userId: string) => {
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+        throw new AppError(httpStatus.NOT_FOUND, "User not found");
+    }
+    if (user.isBlocked) {
+        throw new AppError(httpStatus.CONFLICT, "User already blocked");
+    }
+    user.isBlocked = true;
+    await user.save();
+    return user;
+};
+
+const unblockUserByAdmin = async (userId: string) => {
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+        throw new AppError(httpStatus.NOT_FOUND, "User not found");
+    }
+    if (!user.isBlocked) {
+        throw new AppError(httpStatus.CONFLICT, "User already unblocked");
+    }
+    user.isBlocked = false;
+    await user.save();
+    return user;
+};
+
 export const UserService = {
     createUserIntoDB,
-    getAllUsersFromDB
+    getAllUsersFromDB,
+    blockUserByAdmin,
+    unblockUserByAdmin
+
 }

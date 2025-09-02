@@ -33,7 +33,31 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 });
 
 
+const blockUser = catchAsync(async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const result = await UserService.blockUserByAdmin(userId);
+    sendResponse(res, {
+        success: true,
+        message: "User has been blocked successfully",
+        statusCode: httpStatus.OK,
+        data: result,
+    });
+});
+
+const unblockUser = catchAsync(async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const result = await UserService.unblockUserByAdmin(userId);
+    sendResponse(res, {
+        success: true,
+        message: "User has been unblocked successfully",
+        statusCode: httpStatus.OK,
+        data: result,
+    });
+});
+
 export const UserController = {
   createUser,
-  getAllUsers
+  getAllUsers,
+  blockUser,
+  unblockUser
 }
