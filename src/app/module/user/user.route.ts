@@ -14,6 +14,8 @@ router.post(
   validateRequest(createUserZodSchema),
   UserController.createUser
 )
+//get all user
+router.get("/all-users", UserController.getAllUsers)
 
 
 
