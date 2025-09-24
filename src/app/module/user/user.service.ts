@@ -32,6 +32,12 @@ const getAllUsersFromDB = async () => {
     return { data: users, meta: { total: totalUsers } };
 };
 
+const getMe = async (userId: string) => {
+    const user = await User.findById(userId).select("-password");
+    return {
+        data: user
+    }
+};
 
 const blockUserByAdmin = async (userId: string) => {
     const user = await User.findOne({ _id: userId });
@@ -63,6 +69,7 @@ export const UserService = {
     createUserIntoDB,
     getAllUsersFromDB,
     blockUserByAdmin,
-    unblockUserByAdmin
+    unblockUserByAdmin,
+    getMe
 
 }

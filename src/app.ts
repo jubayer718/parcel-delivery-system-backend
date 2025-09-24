@@ -8,7 +8,10 @@ const app = express();
 
 
 app.use(cookieParser())
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:3000","https://parcel-delivery-one.vercel.app"],
+  credentials:true
+}));
 app.use(express.json());
 app.use('/api/v1', router);
 

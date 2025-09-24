@@ -11,6 +11,8 @@ const user_validation_1 = require("./user.validation");
 const user_interface_1 = require("./user.interface");
 const checkAuth_1 = require("../../middlewares/checkAuth");
 const router = express_1.default.Router();
+//get user data
+router.get("/me", (0, checkAuth_1.checkAuth)(...Object.values(user_interface_1.Role)), user_controler_1.UserController.getMe);
 //register user
 router.post("/register", (0, validateRequest_1.validateRequest)(user_validation_1.createUserZodSchema), user_controler_1.UserController.createUser);
 // ! get all user by admin

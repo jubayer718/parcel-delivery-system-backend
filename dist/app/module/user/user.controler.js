@@ -37,6 +37,21 @@ const getAllUsers = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0,
         meta: data.meta,
     });
 }));
+const getMe = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const decodedToken = req.user;
+    const result = yield user_service_1.UserService.getMe(decodedToken.userId);
+    // res.status(httpStatus.OK).json({
+    //     success: true,
+    //     message: "All Users Retrieved Successfully",
+    //     data: users
+    // })
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.CREATED,
+        message: "Your profile Retrieved Successfully",
+        data: result.data
+    });
+}));
 const blockUser = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.params;
     const result = yield user_service_1.UserService.blockUserByAdmin(userId);
@@ -61,5 +76,6 @@ exports.UserController = {
     createUser,
     getAllUsers,
     blockUser,
-    unblockUser
+    unblockUser,
+    getMe
 };

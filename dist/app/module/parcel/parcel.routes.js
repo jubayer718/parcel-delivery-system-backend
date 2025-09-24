@@ -34,7 +34,7 @@ router.get("/incoming", (0, checkAuth_1.checkAuth)(user_interface_1.Role.RECEIVE
 // ! delivery history for (RECEIVER)
 router.get("/history", (0, checkAuth_1.checkAuth)(user_interface_1.Role.RECEIVER), parcel_controller_1.ParcelControllers.getDeliveryHistory);
 // ! get all parcel (ADMIN)
-router.get("/", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), parcel_controller_1.ParcelControllers.getAllParcelsByAdmin);
+router.get("/admin", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), parcel_controller_1.ParcelControllers.getAllParcelsByAdmin);
 // ! block parcel by (ADMIN)
 router.patch("/block/:parcelId", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), parcel_controller_1.ParcelControllers.blockParcel);
 // ! unblock parcel by (ADMIN)

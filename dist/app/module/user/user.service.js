@@ -33,6 +33,12 @@ const getAllUsersFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
     const totalUsers = yield user_model_1.User.countDocuments();
     return { data: users, meta: { total: totalUsers } };
 });
+const getMe = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.findById(userId).select("-password");
+    return {
+        data: user
+    };
+});
 const blockUserByAdmin = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_model_1.User.findOne({ _id: userId });
     if (!user) {
@@ -61,5 +67,6 @@ exports.UserService = {
     createUserIntoDB,
     getAllUsersFromDB,
     blockUserByAdmin,
-    unblockUserByAdmin
+    unblockUserByAdmin,
+    getMe
 };

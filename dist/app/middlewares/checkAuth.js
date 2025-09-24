@@ -19,11 +19,11 @@ const jwt_1 = require("../utils/jwt");
 const env_1 = require("../config/env");
 const checkAuth = (...authRoles) => (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const accessToke = req.headers.authorization;
-        if (!accessToke) {
+        const accessToken = req.headers.authorization || req.cookies.accessToken;
+        if (!accessToken) {
             throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "You are not authorized");
         }
-        const verifiedToken = (0, jwt_1.verifyToken)(accessToke, env_1.envVars.JWT_ACCESS_SECRET);
+        const verifiedToken = (0, jwt_1.verifyToken)(accessToken, env_1.envVars.JWT_ACCESS_SECRET);
         if (!authRoles.includes(verifiedToken.role)) {
             throw new AppError_1.default(http_status_codes_1.default.UNAUTHORIZED, "You are not authorized");
         }

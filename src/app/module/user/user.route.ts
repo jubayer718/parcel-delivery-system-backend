@@ -9,7 +9,8 @@ import { checkAuth } from '../../middlewares/checkAuth';
 
 
 const router = express.Router();
-
+//get user data
+router.get("/me", checkAuth(...Object.values(Role)), UserController.getMe)
 //register user
 router.post(
   "/register",
